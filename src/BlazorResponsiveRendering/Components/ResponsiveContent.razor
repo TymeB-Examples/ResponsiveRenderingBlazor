@@ -1,0 +1,16 @@
+﻿@using BlazorResponsiveRendering.Enums
+@inject IJSRuntime JS
+
+@implements IAsyncDisposable
+
+@if (_currentFragment != null)
+{
+    if (_currentFragment is RenderFragment<BreakPoint> defaultFragment)
+    {
+        @defaultFragment(_currentBreakPoint)
+    }
+    else if (_currentFragment is RenderFragment renderFragment)
+    {
+        @renderFragment
+    }
+}

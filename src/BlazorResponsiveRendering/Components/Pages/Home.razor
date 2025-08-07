@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<ResponsiveContent>
+    <Xs>
+        <p>Hello Mobile</p>
+    </Xs>
+    <Sm>
+        <p>Hello Tablet</p>
+    </Sm>
+    <Xl>
+        <p>Hello Pc</p>
+    </Xl>
+</ResponsiveContent>
+
+<ResponsiveContent>
+    @switch (context)
+    {
+        case Enums.BreakPoint.Xs:
+            <p>Hello Mobile from ChildContent</p>
+            break;
+        default:
+            <p>Hello others from ChildContent</p>
+            break;
+    }
+</ResponsiveContent>
