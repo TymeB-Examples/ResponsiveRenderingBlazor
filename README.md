@@ -1,2 +1,2 @@
 # ResponsiveRenderingBlazor
-An example to show how to render RenderFragment in a responsive way.
+An example to show how to render RenderFragment(s) in a responsive way.
