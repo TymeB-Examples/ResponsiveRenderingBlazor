@@ -4,13 +4,16 @@
 
 <ResponsiveContent>
     <Xs>
-        <p>Hello Mobile</p>
+        <p>Hello Xs</p>
     </Xs>
     <Sm>
-        <p>Hello Tablet</p>
+        <p>Hello Sm</p>
     </Sm>
+    <Md>
+        <p>Hello Md (We fallback to this as there is no Lg breakpoint)</p>
+    </Md>
     <Xl>
-        <p>Hello Pc</p>
+        <p>Hello Xl and above!</p>
     </Xl>
 </ResponsiveContent>
 
@@ -18,10 +21,10 @@
     @switch (context)
     {
         case Enums.BreakPoint.Xs:
-            <p>Hello Mobile from ChildContent</p>
+            <p>Hello @context.ToString() breakpoint! (from ChildContent)</p>
             break;
         default:
-            <p>Hello others from ChildContent</p>
+            <p>Hello other breakpoints! (from ChildContent)</p>
             break;
     }
 </ResponsiveContent>
