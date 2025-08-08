@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 
 namespace BlazorResponsiveRendering.Components
 {
-    public partial class ResponsiveContent
+    public sealed partial class ResponsiveContent
     {
         private bool _jsIsAvailable;
         private bool _failedJsOnFirstRender;
@@ -19,7 +19,7 @@ namespace BlazorResponsiveRendering.Components
         [Parameter] public RenderFragment? Lg { get; set; }
         [Parameter] public RenderFragment? Xl { get; set; }
         [Parameter] public RenderFragment? Xxl { get; set; }
-        [Parameter] public RenderFragment<BreakPoint> ChildContent { get; set; } = default!;
+        [Parameter] public RenderFragment<BreakPoint>? ChildContent { get; set; }
 
         public ResponsiveContent()
         {
@@ -64,23 +64,27 @@ namespace BlazorResponsiveRendering.Components
         private void InitializeBreakpoints()
         {
             _breakpoints.Clear();
-            _breakpoints[BreakPoint.Xs] = (Delegate?)Xs ?? (Delegate?)ChildContent;
-            _breakpoints[BreakPoint.Sm] = (Delegate?)Sm ?? (Delegate?)ChildContent;
-            _breakpoints[BreakPoint.Md] = (Delegate?)Md ?? (Delegate?)ChildContent;
-            _breakpoints[BreakPoint.Lg] = (Delegate?)Lg ?? (Delegate?)ChildContent;
-            _breakpoints[BreakPoint.Xl] = (Delegate?)Xl ?? (Delegate?)ChildContent;
-            _breakpoints[BreakPoint.Xxl] = (Delegate?)Xxl ?? (Delegate?)ChildContent;
+            _breakpoints[BreakPoint.Xs] = (Delegate?)Xs ?? ChildContent;
+            _breakpoints[BreakPoint.Sm] = (Delegate?)Sm ?? ChildContent;
+            _breakpoints[BreakPoint.Md] = (Delegate?)Md ?? ChildContent;
+            _breakpoints[BreakPoint.Lg] = (Delegate?)Lg ?? ChildContent;
+            _breakpoints[BreakPoint.Xl] = (Delegate?)Xl ?? ChildContent;
+            _breakpoints[BreakPoint.Xxl] = (Delegate?)Xxl ?? ChildContent;
         }
 
         [JSInvokable]
         public void UpdateFragment(int width)
         {
-            var candidates = _breakpoints.Keys.Where(bp => (int)bp <= width).OrderDescending();
+            var candidates = _breakpoints.Keys
+                .Where(bp => (int)bp <= width)
+                .OrderDescending();
+
             foreach (var bp in candidates)
             {
                 if (_breakpoints[bp] != null)
                 {
                     ReRenderIfNeeded(_breakpoints[bp], bp);
+
                     break;
                 }
             }
@@ -93,6 +97,7 @@ namespace BlazorResponsiveRendering.Components
 
             _currentBreakPoint = breakPoint;
             _currentFragment = renderFragment;
+
             StateHasChanged();
         }
 
