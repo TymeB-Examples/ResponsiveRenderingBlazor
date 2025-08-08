@@ -3,7 +3,7 @@
 
 @implements IAsyncDisposable
 
-@if (_currentFragment != null)
+@if (_jsIsAvailable)
 {
     if (_currentFragment is RenderFragment<BreakPoint> defaultFragment)
     {
@@ -13,4 +13,30 @@
     {
         @renderFragment
     }
+}
+else
+{
+    @foreach (var kvp in _breakpoints)
+    {
+        var bp = kvp.Key;
+        <div class="bp-@bp.ToString().ToLowerInvariant()">
+            @if (kvp.Value is RenderFragment<BreakPoint> defaultFragment)
+            {
+                @defaultFragment(bp)
+            }
+            else if (kvp.Value is RenderFragment renderFragment)
+            {
+                @renderFragment
+            }
+            else if (kvp.Value is null)
+            {
+                var fallbackBreakPoint = _breakpoints.LastOrDefault(x => x.Key < bp && x.Value is not null);
+                if(fallbackBreakPoint.Value is RenderFragment fallbackFragment)
+                {
+                    @fallbackFragment
+                }
+            }
+        </div>
+    }
+
 }

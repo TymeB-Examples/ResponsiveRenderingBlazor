@@ -6,6 +6,8 @@ namespace BlazorResponsiveRendering.Components
 {
     public partial class ResponsiveContent
     {
+        private bool _jsIsAvailable;
+        private bool _failedJsOnFirstRender;
         private Delegate? _currentFragment;
         private BreakPoint _currentBreakPoint;
         private readonly DotNetObjectReference<ResponsiveContent> _dotNetRef;
@@ -19,10 +21,14 @@ namespace BlazorResponsiveRendering.Components
         [Parameter] public RenderFragment? Xxl { get; set; }
         [Parameter] public RenderFragment<BreakPoint> ChildContent { get; set; } = default!;
 
-
         public ResponsiveContent()
         {
             _dotNetRef = DotNetObjectReference.Create(this);
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
         }
 
         protected override void OnParametersSet()
@@ -33,15 +39,31 @@ namespace BlazorResponsiveRendering.Components
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            //Still not a better way to check if it is a pre-render or not ...
+            if (firstRender || _failedJsOnFirstRender)
             {
-                await JS.InvokeVoidAsync("window.ResponsiveFragment.registerResizeCallback", _dotNetRef);
-                InitializeBreakpoints();
+                try
+                {
+                    //Invoke js runtime below
+                    await InitializeResponsiveContent();
+                    _jsIsAvailable = true;
+                }
+                catch (Exception)
+                {
 
-                var width = await JS.InvokeAsync<int>("window.ResponsiveFragment.getWindowWidth");
-                UpdateFragment(width);
+                    _failedJsOnFirstRender = firstRender;
+                }
             }
             await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private async Task InitializeResponsiveContent()
+        {
+            await JS.InvokeVoidAsync("window.ResponsiveFragment.registerResizeCallback", _dotNetRef);
+            InitializeBreakpoints();
+
+            var width = await JS.InvokeAsync<int>("window.ResponsiveFragment.getWindowWidth");
+            UpdateFragment(width);
         }
 
         private void InitializeBreakpoints()

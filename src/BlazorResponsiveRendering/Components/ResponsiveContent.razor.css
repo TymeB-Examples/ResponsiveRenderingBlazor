@@ -1,0 +1,46 @@
+﻿/* Default hide all breakpoint fragments */
+.bp-xs, .bp-sm, .bp-md, .bp-lg, .bp-xl, .bp-xxl {
+    display: none;
+}
+
+/* xs: up to 575px */
+@media (max-width: 575.98px) {
+    .bp-xs {
+        display: block !important;
+    }
+}
+
+/* sm: 576px to 767px */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .bp-sm {
+        display: block !important;
+    }
+}
+
+/* md: 768px to 991px */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .bp-md {
+        display: block !important;
+    }
+}
+
+/* lg: 992px to 1199px */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .bp-lg {
+        display: block !important;
+    }
+}
+
+/* xl: 1200px to 1399px */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .bp-xl {
+        display: block !important;
+    }
+}
+
+/* xxl: 1400px and up */
+@media (min-width: 1400px) {
+    .bp-xxl {
+        display: block !important;
+    }
+}
