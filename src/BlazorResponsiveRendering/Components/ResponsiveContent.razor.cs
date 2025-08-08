@@ -26,11 +26,6 @@ namespace BlazorResponsiveRendering.Components
             _dotNetRef = DotNetObjectReference.Create(this);
         }
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
-
         protected override void OnParametersSet()
         {
             InitializeBreakpoints();
