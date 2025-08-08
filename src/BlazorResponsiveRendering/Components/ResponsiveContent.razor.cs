@@ -98,7 +98,15 @@ namespace BlazorResponsiveRendering.Components
 
         public async ValueTask DisposeAsync()
         {
-            await JS.InvokeVoidAsync("window.ResponsiveFragment.dispose");
+            //Catch exceptions as JSRuntime is disconnected before component is disposed...
+            try
+            {
+                await JS.InvokeVoidAsync("window.ResponsiveFragment.dispose");
+            }
+            catch (Exception)
+            {
+
+            }
 
             _dotNetRef.Dispose();
         }
