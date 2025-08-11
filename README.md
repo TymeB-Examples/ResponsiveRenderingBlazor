@@ -5,6 +5,8 @@ This repository demonstrates responsive rendering techniques in Blazor, enabling
 
 Using Blazor concepts like `RenderFragment` and `RenderContext`, this example shows how to build performant, flexible UI components that seamlessly respond to varying viewport sizes.
 
+The current example uses the same breakpoints as [Bootstrap](https://getbootstrap.com/docs/5.0/layout/breakpoints/). But you can extend this to your liking, you can also use an `IList<IBreakPoint> Breakpoints {get; set;}` for example and render it based on those (or however you like).
+
 ---
 
 ## Features

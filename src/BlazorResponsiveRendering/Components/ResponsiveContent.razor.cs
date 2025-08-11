@@ -63,7 +63,6 @@ namespace BlazorResponsiveRendering.Components
 
         private void InitializeBreakpoints()
         {
-            _breakpoints.Clear();
             _breakpoints[BreakPoint.Xs] = (Delegate?)Xs ?? ChildContent;
             _breakpoints[BreakPoint.Sm] = (Delegate?)Sm ?? ChildContent;
             _breakpoints[BreakPoint.Md] = (Delegate?)Md ?? ChildContent;
